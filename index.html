@@ -666,7 +666,6 @@ groupKeys.forEach(key => {
       card.onclick = () => openModal(item);
 
       card.innerHTML = `
-        <h3>${item.name}</h3>
         <p style="font-size: 16px"><b>${item.name}</b></p>
         ${item.location ? `<p>${item.location}</p>` : ""}
         ${item.time_range ? `<p>${item.time_range}</p>` : ""}
