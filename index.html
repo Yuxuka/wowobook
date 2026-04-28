@@ -97,17 +97,19 @@ button:hover {
 
 #filter-body {
   display: none;
-  padding: 12px;
+  padding: 0 8px 8px 8px;
+  margin: 8px 12px 12px 12px;
   border-top: 1px solid #eee;
 }
 
 .filter-row {
   display: flex;
   align-items: flex-start;
+  margin-top: 12px;
 }
 
 .filter-label {
-  flex: 0 0 70px;
+  flex: 0 0 80px;
   padding-top: 12px;
 }
 
@@ -115,7 +117,7 @@ button:hover {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  /*gap: 6px;*/
 }
 
 .active-ui {
@@ -157,16 +159,16 @@ img {
   display: none;
   position: fixed;
   z-index: 999;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: rgba(0,0,0,0.4);
+  overflow-y: auto;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .modal-content {
   background: #fafaff;
-  margin: 15% auto;
+  margin: 15vh auto 40px;
   padding: 20px;
   border-radius: 20px;
   width: 75%;
@@ -218,7 +220,7 @@ img {
 
 <div id="filter-panel">
   <div id="filter-header" onclick="toggleFilters()">
-    ▽ 篩選
+      ▽ 篩選
   </div>
   
 <div id="filter-body">
@@ -274,7 +276,7 @@ img {
 
 const SHEET_ID = "1OGYjj-yO1yo1o376wLw_k3spZXkPRBCuswlQayksa2w";
 
-// 🌿 狀態（全域變數）
+// 狀態（全域變數）
 let currentSheet = "魚";
 let starFilter = [];
 let timeFilter = [];
@@ -714,7 +716,7 @@ function openModal(item) {
     ${item.tidbit ? `<p>${item.tidbit}</p>` : ""}
   `;
 
-  modal.style.display = "block";
+  modal.style.display = "flex";
 }
 
 function closeModal() {
