@@ -117,7 +117,6 @@ button:hover {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
-  /*gap: 6px;*/
 }
 
 .active-ui {
@@ -141,11 +140,22 @@ button:hover {
   gap: 15px;
 }
 
-/*
-img {
-  width: 100%;
+
+.card img {
+  width: 50%;
+  height: 60px;
+  margin-top: 12px;
+  object-fit: contain;
   border-radius: 12px;
-}*/
+}
+
+.modal-content img {
+  width: 50%;
+  height: 100px;
+  margin-top: 12px;
+  object-fit: contain;
+  border-radius: 12px;
+}
 
 .stars {
   cursor: pointer;
@@ -667,6 +677,7 @@ groupKeys.forEach(key => {
       card.onclick = () => openModal(item);
 
       card.innerHTML = `
+        ${item.image ? `<img src="${item.image}" />` : ""}
         <p style="font-size: 16px"><b>${item.name}</b></p>
         ${item.location ? `<p>${item.location}</p>` : ""}
         ${item.time_range ? `<p>${item.time_range}</p>` : ""}
@@ -703,6 +714,7 @@ function openModal(item) {
   const body = document.getElementById("modal-body");
 
   body.innerHTML = `
+    ${item.image ? `<img src="${item.image}" />` : ""}
     <h2>${item.name}</h2>
     <p>解鎖等級：${item.level}</p>
 
