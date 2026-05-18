@@ -243,7 +243,7 @@ button:hover {
     <button data-type="star" data-value="3" onclick="setStarFilter(3)">3</button>
     <button data-type="star" data-value="4" onclick="setStarFilter(4)">4</button>
     <button data-type="star" data-value="5" onclick="setStarFilter(5)">5</button>
-  </div>
+    </div>
   </div>
 
   <div class="filter-row">
@@ -255,7 +255,7 @@ button:hover {
     <button data-type="time" data-value="12~18" onclick="setTimeFilter('12~18')">12~18</button>
     <button data-type="time" data-value="18~24" onclick="setTimeFilter('18~24')">18~24</button>
     <button data-type="time" data-value="全日" onclick="setTimeFilter('全日')">全日</button>
-  </div>
+    </div>
   </div>
   
   <div class="filter-row">
@@ -264,7 +264,17 @@ button:hover {
     <button data-type="period" data-value="" onclick="setPeriodFilter('')">全部</button>
     <button data-type="period" data-value="日常" onclick="setPeriodFilter('日常')">日常</button>
     <button data-type="period" data-value="活動" onclick="setPeriodFilter('活動')">活動</button>
+    </div>
   </div>
+
+  <div class="filter-row">
+    <div class="filter-label">天氣：</div>
+    <div class="filter-options">
+    <button data-type="weather" data-value="" onclick="setWeatherFilter('')">全部</button>
+    <button data-type="weather" data-value="晴天" onclick="setWeatherFilter('晴天')">晴天</button>
+    <button data-type="weather" data-value="雨天" onclick="setWeatherFilter('雨天')">雨天</button>
+    <button data-type="weather" data-value="彩虹" onclick="setWeatherFilter('彩虹')">彩虹</button>
+    </div>
   </div>
 
 </div>
@@ -286,10 +296,11 @@ button:hover {
 const SHEET_ID = "1OGYjj-yO1yo1o376wLw_k3spZXkPRBCuswlQayksa2w";
 
 // 狀態（全域變數）
-let currentSheet = "魚";
+let currentSheet = localStorage.getItem("currentSheet") || "食譜";
 let starFilter = [];
 let timeFilter = [];
 let periodFilter = [];
+let weatherFilter = [];
 let sortType = "level";
 let sortOrder = "asc"; 
 let filterOpen = false;
@@ -312,6 +323,7 @@ function getURL(sheetName) {
 // 切換圖鑑
 function switchSheet(name) {
   currentSheet = name;
+  localStorage.setItem("currentSheet", name);
   document.getElementById("search").value = "";
   
   updateActiveTabs();
@@ -377,7 +389,21 @@ function setPeriodFilter(value) {
   loadData();
 }
 
+function setWeatherFilter(value) {
+  if (!value) {
+    weatherFilter = [];
+  } else {
+    if (weatherFilter.includes(value)) {
+      weatherFilter = 
+          weatherFilter.filter(v => v !== value);
+    } else {
+      weatherFilter.push(value);
+    }
+  }
 
+  updateActiveButtons();
+  loadData();
+}
 
 function updateActiveButtons() {
   document.querySelectorAll("#filter-panel button").forEach(btn => {
@@ -415,6 +441,17 @@ function updateActiveButtons() {
         btn.classList.add("active-ui");
       }
     }
+
+    if (type === "weather") {
+      if (value === "" && weatherFilter.length === 0) {
+        btn.classList.add("active-ui");
+      }
+
+      if (weatherFilter.includes(value)) {
+        btn.classList.add("active-ui");
+      }
+    }
+
   });
 }
 
@@ -545,6 +582,7 @@ function getGroupTitle(key) {
 // 讀取 + 過濾 + 排序
 function loadData() {
   const keyword = document.getElementById("search").value.toLowerCase();
+  localStorage.setItem("searchKeyword", keyword);
 
   fetch(getURL(currentSheet))
     .then(res => res.json())
@@ -592,6 +630,27 @@ function loadData() {
           if (!match) return false;
         }
         
+      // 天氣
+      if (weatherFilter.length > 0) {
+        const weather = (item.weather || "")
+            .split(", ")
+            .map(w => w.trim());
+
+        let match = false;
+
+          if(weatherFilter.length === 1) {
+              match = weather.length === 1 &&
+              weather [0] === weatherFilter[0];
+          }
+
+          else {
+              match = weather.every(w =>
+                  weatherFilter.includes(w)
+              );
+          }
+
+          if (!match) return false;
+       }
 
         return true;
       });
@@ -746,6 +805,7 @@ function closeModal() {
 document.getElementById("sort-order").innerText =
   sortOrder === "asc" ? "⇧" : "⇩";
 document.getElementById("search").addEventListener("input", loadData);
+document.getElementById("search").value = localStorage.getItem("searchKeyword") || "";
 updateActiveTabs();
 updateActiveButtons();
 loadData();
