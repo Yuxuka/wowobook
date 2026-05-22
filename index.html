@@ -133,6 +133,7 @@ button:hover {
 
   display: flex;
   flex-direction: column;
+  align-items: center;
   
   text-align: center;
   font-size: 12px;
@@ -143,13 +144,14 @@ button:hover {
 
 .stars {
    margin-top: auto;
-   margin-bottom: 6px;
+   margin-bottom: 12px;
 }
     
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 15px;
+  align-items: stretch;
 }
 
 
@@ -159,10 +161,6 @@ button:hover {
   margin-top: 12px;
   object-fit: contain;
   border-radius: 12px;
-}
-
-.card p {
-  margin: 4px 0;
 }
 
 .modal-content img {
