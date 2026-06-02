@@ -140,6 +140,21 @@ button:hover {
 
   min-height: 180px;
   cursor: pointer;
+  
+  position: relative;
+}
+
+.card-period {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  background: #ffeef0;
+  border: 1px solid #ffe0e0;
+  border-radius: 7px;
+
+  padding: 2px 8px;
+  font-size: 11px;
 }
 
 .stars {
@@ -221,7 +236,7 @@ button:hover {
     <button data-sheet="鳥" onclick="switchSheet('鳥')">🦜⸒⸒ 鳥</button>
     <button data-sheet="蟲" onclick="switchSheet('蟲')">🐞〟蟲</button>
     <button data-sheet="食譜" onclick="switchSheet('食譜')">🧁*. 食譜</button>
-    <button data-sheet="花" onclick="switchSheet('花')">🌷⁺.𖧷 花</button>
+    <button data-sheet="花" onclick="switchSheet('花')">⁺🌷.* 花</button>
     <button data-sheet="草" onclick="switchSheet('草')">🌿˖⊹ 草</button>
 </div>
 
@@ -749,6 +764,10 @@ groupKeys.forEach(key => {
       card.onclick = () => openModal(item);
 
       card.innerHTML = `
+        ${item.active_time
+  ? `<div class="card-period">${item.active_time}</div>`
+  : ""
+}
         ${item.image?.trim()
           ? `<img loading="lazy" src="${item.image.trim()}"
             onerror="this.style.display='none'" />`
